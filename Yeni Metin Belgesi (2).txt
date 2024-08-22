@@ -1,0 +1,26 @@
+# declare new thread
+thread new[int::1]{
+     TBASH.typeOF[Iu][RUN]{
+          %FILENAME = "cmd.exe".();
+	  %ARGS = "/c ipconfig".();
+	  %OUT = L*0::255::0;
+     T}
+}
+# Thread starts on this line v
+t.2.Start();
+# check if user is administor or not
+if str[ env.username == "Administor"]? then{
+	# If user is administor then write administor
+	Iout -D (Su)["User is administor"];
+fi;}else if str[ env.username != "Administor" ]? then{
+	# If user is not a administor then write v
+	Eout -D (Su)["User is not administor"]*255::0::0;
+se;}
+document.getfile["C:\Users\" + env.username] = $ARR_FILE;
+# declare new count loop for check the file paths
+count[new[int::$no]]S:{0}::E:{$ARR_FILE.len}::[++]{
+	Cif str[ []$ARR_FILE($no) == "C:\Users\" + env.username + "\AdminLog" ]? then{
+	    Idocument.read[[]$ARR_FILE($no)] = $LOGS;
+	Cfi;}
+rof;} 
+# .eb file
